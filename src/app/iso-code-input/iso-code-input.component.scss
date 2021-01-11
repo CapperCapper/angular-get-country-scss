@@ -1,0 +1,135 @@
+$color-primary: #220b5e;
+$color-secondary: #7654b4;
+$color-light: #967ecb;
+$grey-light: #eeeeee;
+
+.iso-input {
+  &__header {
+    font-size: 1.8rem;
+  }
+
+  &__container {
+    background-color: #ffffff;
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__button {
+    border: 0;
+    box-shadow: 0px 10px 14px -7px #230b5e;
+    background-color: #051277;
+    border-radius: 8px;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 13px 32px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #513779;
+
+    &:disabled {
+      background: linear-gradient(
+        to bottom,
+        $grey-light 5%,
+        scale-color($color-secondary, $lightness: 50%) 100%
+      );
+      background-color: scale-color($color-secondary, $lightness: 50%);
+      color: $color-light;
+      cursor: not-allowed;
+      text-shadow: none;
+      &:hover {
+        background: linear-gradient(
+          to bottom,
+          $grey-light 5%,
+          scale-color($color-secondary, $lightness: 50%) 100%
+        );
+        background-color: scale-color($color-secondary, $lightness: 50%);
+      }
+    }
+
+    &:hover {
+      background: linear-gradient(to bottom, #7654b4 5%, #051277 100%);
+      background-color: #7654b4;
+    }
+
+    &:active {
+      position: relative;
+      top: 1px;
+    }
+  }
+
+  &__error {
+    background-color: scale-color($color-secondary, $lightness: 50%);
+    border: 1px solid $color-secondary;
+    border-radius: 0.5rem;
+  }
+}
+
+// Input
+
+$char-w: 1ch;
+$gap: 0.5 * $char-w;
+$n-char: 3;
+$in-w: $n-char * ($char-w + $gap);
+
+input {
+  display: block;
+  margin: 2em auto;
+  border: none;
+  padding: 0;
+  width: $in-w;
+  background: repeating-linear-gradient(
+      90deg,
+      $color-light 0,
+      $color-light $char-w,
+      transparent 0,
+      transparent $char-w + $gap
+    )
+    0 100% / #{$in-w - $gap} 2px no-repeat;
+  font: 5ch consolas, monospace;
+  letter-spacing: $gap;
+
+  &:focus {
+    outline: none;
+    color: $color-primary;
+  }
+}
+
+// Table
+
+.table {
+  width: 100%;
+  border: 1px solid $grey-light;
+
+  thead {
+    background: $color-primary;
+    color: #fff;
+    tr {
+      th {
+        padding: 1rem;
+      }
+    }
+  }
+  tbody {
+    tr {
+      th {
+        font-weight: bold;
+      }
+      td {
+        padding: 1rem;
+      }
+
+      &:nth-of-type(odd) {
+        background: $grey-light;
+      }
+    }
+  }
+}
