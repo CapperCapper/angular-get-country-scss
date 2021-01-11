@@ -80,7 +80,7 @@ $gap: 0.5 * $char-w;
 $n-char: 3;
 $in-w: $n-char * ($char-w + $gap);
 
-input {
+.character-input {
   display: block;
   margin: 2em auto;
   border: none;
@@ -114,6 +114,7 @@ input {
     color: #fff;
     tr {
       th {
+        font-weight: bold;
         padding: 1rem;
       }
     }

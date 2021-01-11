@@ -1,98 +1,105 @@
-<form class="iso-input__container p-2">
-	<section class="iso-input__section mb-2">
-		<h1 class="iso-input__header mb-1">Country Information Finder</h1>
-		<p id="iso-input__description" class="mb-1">
-			Please enter a 2 or 3 letter ISO code for a country to see relevant country
-			information
-		</p>
+<form id="iso-input__form" class="iso-input__container p-2" (submit)="submit()">
+  <section class="iso-input__section mb-2">
+    <h1 class="iso-input__header mb-1">Country Information Finder</h1>
+    <p id="iso-input__description" class="mb-1">
+      Please enter a 2 or 3 letter ISO code for a country to see relevant
+      country information
+    </p>
 
-		<label id="iso-input__label" class="sr-only" for="iso-input">ISO Code</label>
-		<input
-    id="iso-input"
-    type="text"
-    class="form-control"
-    [formControl]="isoInput"
-    pattern="[a-z]*"
-    maxlength="3"
-    aria-required="true"
-    attr.aria-invalid="{{ isoInput.invalid }}"
-    aria-labelledby="iso-input__label"
-    aria-describedby="iso-input__description"
-  />
-		<button class="iso-input__button" type="submit" (click)="submit()" [disabled]="!isoInput.valid">
-    Search
-  </button>
-	</section>
+    <label id="iso-input__label" class="sr-only" for="iso-input"
+      >ISO Code</label
+    >
+    <input
+      id="iso-input"
+      type="text"
+      class="character-input"
+      [formControl]="isoInput"
+      pattern="[a-z]*"
+      maxlength="3"
+      aria-required="true"
+      attr.aria-invalid="{{ isoInput.invalid }}"
+      aria-labelledby="iso-input__label"
+      aria-describedby="iso-input__description"
+    />
+    <div
+      id="error--invalid-code"
+      *ngIf="
+        !!isoInput.value &&
+        (isoInput.dirty || isoInput.touched) &&
+        showInvalidCodeErrorMessage
+      "
+      class="iso-input__error p-1 mb-1"
+    >
+      <p>{{ isoInput.value }} is not a valid ISO code</p>
+    </div>
 
-	<div id="error--invalid-code"
-		*ngIf="(!!isoInput.value && (isoInput.dirty || isoInput.touched))&& showInvalidCodeErrorMessage"
-		class="iso-input__error  p-1">
-		<p>
-			{{isoInput.value}} is not a valid ISO code
-		</p>
-	</div>
+    <div
+      *ngIf="
+        isoInput.invalid &&
+        !!isoInput.value &&
+        (isoInput.dirty || isoInput.touched)
+      "
+      class="iso-input__error p-1 mb-1"
+    >
+      <p id="error--invalid-pattern" *ngIf="isoInput.errors?.pattern">
+        <i class="fas fa-exclamation-triangle pr-1"></i>Only letters A-Z are
+        allowed. The input must be a 2 or 3 letter ISO code
+      </p>
+      <p id="error--max-length" *ngIf="isoInput.errors?.maxLength">
+        <i class="fas fa-exclamation-triangle pr-1"></i>The input must be a 2 or
+        3 letter ISO code
+      </p>
+    </div>
+    <button
+      class="iso-input__button"
+      type="submit"
+      [disabled]="!isoInput.valid"
+    >
+      Search
+    </button>
+  </section>
 
-	<div *ngIf="isoInput.invalid && !!isoInput.value && (isoInput.dirty || isoInput.touched)"
-		class="iso-input__error p-1">
-		<p id="error--invalid-pattern" *ngIf="isoInput.errors?.pattern">
-			<i class="fas fa-exclamation-triangle pr-1"></i>Only letters A-Z are allowed.
-			The input must be a 2 or 3 letter ISO code</p>
-		<p id="error--max-length" *ngIf="isoInput.errors?.maxLength">
-			<i class="fas fa-exclamation-triangle pr-1"></i>The input must be a 2 or 3
-			letter ISO code</p>
-	</div>
-	<ng-container *ngIf="countryInfo$ | async as countryInfo">
-		<table class="table">
-
-			<thead>
-				<tr>
-					<th colspan="2">
-						Country information for ISO code {{countryInfo.iso2Code}}
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th scope="row">
-						Country Name
-					</th>
-					<td>
-						{{countryInfo.countryName}}
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						Region
-					</th>
-					<td>
-						{{countryInfo.region}}
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						Capital City
-					</th>
-					<td>
-						{{countryInfo.capitalCity}}
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						Longitude
-					</th>
-					<td>
-						{{countryInfo.longitude}}
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						Latitude
-					</th>
-					<td>
-						{{countryInfo.latitude}}
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</ng-container>
+  <ng-container *ngIf="countryInfo$ | async as countryInfo">
+    <table class="table iso-results">
+      <thead>
+        <tr>
+          <th colspan="2">
+            Country information for ISO code {{ countryInfo.iso2Code }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Country Name</th>
+          <td class="iso-results--country-name">
+            {{ countryInfo.countryName }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Region</th>
+          <td class="iso-results--region">
+            {{ countryInfo.region }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Capital City</th>
+          <td class="iso-results--capital">
+            {{ countryInfo.capitalCity }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Longitude</th>
+          <td class="iso-results--longitude">
+            {{ countryInfo.longitude }}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Latitude</th>
+          <td class="iso-results--latitude">
+            {{ countryInfo.latitude }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
 </form>
